@@ -1,5 +1,5 @@
 from django.views.generic import ListView, DetailView
-from .models import ClothingItem, Category, Size
+from .models import ClothingItem, Category, Size, ClothingItemSize
 from django.db.models import Q
 
 
@@ -46,5 +46,12 @@ class CatalogView(ListView):
 class ClothingItemDetailView(DetailView):
     model = ClothingItem
     template_name = "main/product/detail.html"
-    context_object_name = "slug"
+    context_object_name = "clothing_item"
     slug_url_kwarg = "slug"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        clothing_item = self.object
+        available_sizes = ClothingItemSize.objects.filter(clothing_item=clothing_item, available=True)
+        context["available_sizes"] = available_sizes
+        return context
