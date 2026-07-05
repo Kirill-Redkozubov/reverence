@@ -9,7 +9,7 @@ class UserAdmin(admin.ModelAdmin):
     list_filter = ('is_staff', 'is_active')
     ordering = ('email', )
 
-    fieldsets = (
+    fieldets = (
         (None, {
             'fields': ('email', 'password')
         }),
